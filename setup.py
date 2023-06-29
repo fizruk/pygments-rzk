@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pygments-rzk',
-    version='0.7.3',
+    version='0.1.0',
     description='Pygments lexer for Rzk language (of proof assistant for synthetic ∞-categories).',
     long_description=open('README.md').read(),
     keywords='pygments rzk lexer',
