@@ -20,7 +20,7 @@ class RzkLexer(pygments.lexer.RegexLexer):
     aliases = ['rzk']
     filenames = ['*.rzk']
     url = 'https://github.com/fizruk/rzk'
-    KEYWORDS = ['as', 'uses']
+    KEYWORDS = [] # ['as', 'uses']
     def get_tokens_unprocessed(self, text):
         for index, token, value in super(RzkLexer,self).get_tokens_unprocessed(text):
             if token is Name and value in self.KEYWORDS:
@@ -30,27 +30,42 @@ class RzkLexer(pygments.lexer.RegexLexer):
     tokens = {
         'root': [
             (r'--.*\n', Comment),
-            (r'\{-((.)(?<!-))*-((.)(?<![-\}])((.)(?<!-))*-|-)*\}', Comment),
-            (r'rzk-1', String),
-            (r'(\*_1|0_2|1_2)|\b(refl|BOT|recBOT|TOP|first|second|idJ|recOR)\b', Name.Constant),
-            (r'U|CUBE|TOPE|1|2|Sigma|∑|Σ', Keyword.Type),
-            (r'(#lang|#set-option|#unset-option|#check|#compute-whnf|#compute-nf|#compute)\b', Name.Decorator),
-            (r'(#section|#end)\b(\s+[^\t\n\r !"#\(\),-\.;:<>\?\[\\\]\{\|\}][^\t\n\r !"#\(\),\.;:<>\?\[\\\]\{\|\}]*)',
-                bygroups(Name.Decorator, Name.Entity)),
-            (r' = | \* | === | <= | /\\ | \\/ ', Operator),
-            (r'(\(\s*)((([^\t\n\r !"#\(\),-\.;:<>\?\[\\\]\{\|\}][^\t\n\r !"#\(\),\.;:<>\?\[\\\]\{\|\}]*)\s*)+)(:)',
-                bygroups(Punctuation, Name.Variable, None, None, Punctuation)),
+            (r'^(#lang)(\s+)((?![-?!.])[^.\\;,#"\]\[)(}{><|\s]*)(?=$|[.\\;,#"\]\[)(}{><|\s])\s*$',
+             bygroups(Name.Decorator, Punctuation, String)),
+            (r'^(#check|#compute(-whnf|-nf)?|#set-option|#unset-option)(?=$|[.\\;,#"\]\[)(}{><|\s-])',
+             bygroups(Name.Decorator)),
+            (r'^(#section|#end)(\s+(?![-?!.])[^.\\;,#"\]\[)(}{><|\s]*)?(?=$|[.\\;,#"\]\[)(}{><|\s])',
+             bygroups(Name.Decorator, Name.Entity)),
+            (r'^(#assume|#variable|#variables)(\s+)((?![-?!.])[^.\\;,#"\]\[)(}{><|:]*)(?=$|[.\\;,#"\]\[)(}{><|\s])',
+             bygroups(Keyword.Declaration, Punctuation, Name.Variable)),
+            (r'^(#def|#define|#postulate)(\s+)((?![-?!.])[^.\\;,#"\]\[)(}{><|\s]*)(?=$|[.\\;,#"\]\[)(}{><|\s])((\s+)(uses)(\s+\()((?![-?!.])[^.\\;,#"\]\[)(}{><|]*)(\)))?',
+             bygroups(Keyword.Declaration, Punctuation, Name.Function, None, Punctuation, Keyword, Punctuation, Name.Variable, Punctuation)),
+
+            # bultins
+            (r'(?<=[.\\;,#"\]\[)(}{><|\s])(CUBE|TOPE|U(nit)?|𝒰)(?=$|[.\\;,#"\]\[)(}{><|\s])',
+             Keyword.Type),
+            (r'(?<=[.\\;,#"\]\[)(}{><|\s])(1|2|𝟙|𝟚|Sigma|∑|Σ)(?=$|[.\\;,#"\]\[)(}{><|\s])',
+             Keyword.Type),
+            (r'(===|<=|\\/|/\\)',
+             Operator),
+            (r'(⊤|⊥|\*_1|⋆)|(?<=[.\\;,#"\]\[)(}{><|\s])(0_2|1_2|TOP|BOT)(?=$|[.\\;,#"\]\[)(}{><|\s])',
+             Name.Constant),
+            (r'(?<=[.\\;,#"\]\[)(}{><|\s])(recOR|rec∨|recBOT|rec⊥|idJ|refl|first|second|π₁|π₂|unit)((?=$|[.\\;,#"\]\[)(}{><|\s])|(?=_{))',
+             Name.Constant),
+            (r'(?<=[.\\;,#"\]\[)(}{><|\s])as(?=$|[.\\;,#"\]\[)(}{><|\s])',
+             Keyword),
+
+            # parameters
+            (r'(\(\s*)([^{:\)]+\s*)(:)(?=$|[.\\;,#"\]\[)(}{><|\s])',
+             bygroups(Punctuation, Name.Variable, Punctuation)),
+
+            (r'"', String, 'string'),
+
             (r'(\\\s*)((([^\t\n\r !"#\(\),-\.;:\\\/=<>\?\[\\\]\{\|\}][^\t\n\r !"#\(\),\.;:<>\?\[\\\]\{\|\}]*)\s*)+)',
                 bygroups(Punctuation, Name.Variable)),
-            (r'(;|:|:=|\(|\)|_\b|,|\{|\||\}|\||\[|\]|<|>|\\|->)', Punctuation),
-            (r'((#assume|#variables|#variable)\b\s+)([^:]+)',
-                bygroups(Keyword.Declaration, None, Name.Variable)),
-            (r'((#postulate|#define|#def)\b\s+)([^\t\n\r !"#\(\),-\.;:<>\?\[\\\]\{\|\}][^\t\n\r !"#\(\),\.;:<>\?\[\\\]\{\|\}]*\s+)((uses\s+)(\()([^\(\)]+)(\)))?',
-                bygroups(Keyword, None, Name.Function, None, Keyword, Punctuation, Name.Variable, Punctuation)),
-            (r'"((.)(?<!["\\])|\\["\\nt])*"', String.Double),
-            (r'\s+', Token.Space),
-            (r'(.)(?<![\t\n\r !"#\(\),-\.;:<>\?\[\\\]\{\|\}])((.)(?<![\t\n\r "#\(\),;<>\[\\\]\{\|\}]))*', Name),
-            (r'\?', Name),
-            (r'[a-zA-Z]([a-zA-Z]|\d|_|\')*', Name)
-        ]
+        ],
+        'string': [
+            (r'[^"]+', String),
+            (r'"', String, '#pop'),
+        ],
     }
