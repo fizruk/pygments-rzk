@@ -1,6 +1,6 @@
 # Pygments higlighter for Rzk
 
-This is a simple [Pygments](https://pygments.org) higlighter for [Rzk](https://github.com/fizruk/rzk), which can be used with [`minted` package](https://www.ctan.org/pkg/minted) when writing rzk code in LaTeX or with [MkDocs](https://www.mkdocs.org) to highlight code in blocks when rendering literate Rzk Markdown files.
+This is a simple [Pygments](https://pygments.org) higlighter for [Rzk](https://github.com/rzk-lang/rzk), which can be used with [`minted` package](https://www.ctan.org/pkg/minted) when writing rzk code in LaTeX or with [MkDocs](https://www.mkdocs.org) to highlight code in blocks when rendering literate Rzk Markdown files.
 
 ## How to use
 
@@ -9,7 +9,7 @@ This is a simple [Pygments](https://pygments.org) higlighter for [Rzk](https://g
 Clone this repository, and install the highlighter using [`pip` installer](https://pip.pypa.io/en/stable/):
 
 ```sh
-git clone https://github.com/fizruk/pygments-rzk.git
+git clone https://github.com/rzk-lang/pygments-rzk.git
 cd pygments-rzk   # enter repository root
 pip install .     # install using pip
 ```
@@ -52,7 +52,7 @@ A basic example:
   := idJ(A, x, \y' p' -> y' = x, refl, y, p)
 
 -- path composition by induction on the second path
-#define concat 
+#define concat
   (p : x = y)       -- A path from x to y in A.
   (q : y = z)       -- A path from y to z in A.
   : (x = z)

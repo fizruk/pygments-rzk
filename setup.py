@@ -14,7 +14,7 @@ setup(
     author='Nikolai Kudasov',
     author_email='nickolay.kudasov@gmail.com',
 
-    url='https://github.com/fizruk/pygments-rzk',
+    url='https://github.com/rzk-lang/pygments-rzk',
 
     packages=find_packages(),
     install_requires=['pygments >= 1.4'],

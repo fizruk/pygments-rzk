@@ -19,7 +19,7 @@ class RzkLexer(pygments.lexer.RegexLexer):
     name = 'Rzk'
     aliases = ['rzk']
     filenames = ['*.rzk']
-    url = 'https://github.com/fizruk/rzk'
+    url = 'https://github.com/rzk-lang/rzk'
     KEYWORDS = [] # ['as', 'uses']
     def get_tokens_unprocessed(self, text):
         for index, token, value in super(RzkLexer,self).get_tokens_unprocessed(text):
