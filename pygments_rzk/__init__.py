@@ -42,17 +42,17 @@ class RzkLexer(pygments.lexer.RegexLexer):
              bygroups(Keyword.Reserved, Punctuation, Name.Function, None, Punctuation, Keyword, Punctuation, Text, Punctuation)),
 
             # bultins
-            (r'(?<=[.\\;,#"\]\[)(}{><|\s])(CUBE|TOPE|U(nit)?)(?=$|[.\\;,#"\]\[)(}{><|\s])',
+            (r'(^|(?<=[^.\\;,#"\]\[)(}{><|\s]))(CUBE|TOPE|U(nit)?)(?=$|[.\\;,#"\]\[)(}{><|\s])',
              Keyword.Type),
-            (r'(?<=[.\\;,#"\]\[)(}{><|\s])(1|2|Sigma|∑|Σ)(?=$|[.\\;,#"\]\[)(}{><|\s])',
+            (r'(^|(?<=[.\\;,#"\]\[)(}{><|\s]))(1|2|Sigma|∑|Σ)(?=$|[.\\;,#"\]\[)(}{><|\s])',
              Keyword.Type),
             (r'(===|≡|<=|≤|\\/|∨|/\\|∧)',
              String.Other),
             (r'(⊤|⊥|\*_1|\*₁)|(?<=[.\\;,#"\]\[)(}{><|\s])(0_2|0₂|1_2|1₂|TOP|BOT)(?=$|[.\\;,#"\]\[)(}{><|\s])',
              Number),
-            (r'(?<=[.\\;,#"\]\[)(}{><|\s])(recOR|recBOT|idJ|refl|first|second|π₁|π₂|unit)((?=$|[.\\;,#"\]\[)(}{><|\s])|(?=_{))',
+            (r'(^|(?<=[.\\;,#"\]\[)(}{><|\s]))(recOR|recBOT|idJ|refl|first|second|π₁|π₂|unit)((?=$|[.\\;,#"\]\[)(}{><|\s])|(?=_{))',
              String),
-            (r'(?<=[.\\;,#"\]\[)(}{><|\s])as(?=$|[.\\;,#"\]\[)(}{><|\s])',
+            (r'(^|(?<=[.\\;,#"\]\[)(}{><|\s]))as(?=$|[.\\;,#"\]\[)(}{><|\s])',
              Keyword.Reserved),
 
             # parameters
